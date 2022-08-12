@@ -1,13 +1,13 @@
 import com.example.Feline;
-import org.junit.Assert;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import org.mockito.Mockito;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 
 import java.util.List;
 
 
-/*@RunWith(MockitoJUnitRunner.class)*/
+@RunWith(Parameterized.class)
 public class FelineTests {
 
     Feline feline = new Feline();
@@ -20,47 +20,6 @@ public class FelineTests {
         assertEquals("eatMeatList is correct",expected, actual);
     }
 
-    //Тест на проверку, что список еды Хищника включает в себя Рыбу
-    @Test
-    public void eatMeatContainsFishInListOfPredatorFoodTest() throws Exception {
-        String fish = "Рыба";
-        boolean actual = feline.eatMeat().contains(fish);
-        Assert.assertTrue("Fish is a part of eatMeatList", actual);
-    }
-
-    //Тест на проверку, что список еды Хищника включает в себя Птиц
-    @Test
-    public void eatMeatContainsBirdsInListOfPredatorFoodTest() throws Exception {
-        String birds = "Птицы";
-        boolean actual = feline.eatMeat().contains(birds);
-        Assert.assertTrue("Birds are a part of eatMeatList",actual);
-    }
-
-    //Тест на проверку, что список еды Хищника включает в себя Животных
-    @Test
-    public void eatMeatContainsAnySmallAnimalsInListOfPredatorFoodTest() throws Exception {
-        String anySmallAnimals = "Птицы";
-        boolean actual = feline.eatMeat().contains(anySmallAnimals);
-        Assert.assertTrue("Any small animals are a part of eatMeatList",actual);
-    }
-
-
-    //Проверка кейса, когда список еды хищника изменили
-    /*@Spy
-    Feline someFeline = new Feline();
-    @Test
-    public void eatMeatShouldReturnListObject() throws Exception {
-        List <String> someEatMeatList = List.of("first", "second", "third");
-        Mockito.doReturn(someEatMeatList).when(someFeline).getFood(Mockito.anyString());
-        assertEquals(someEatMeatList, someFeline.eatMeat());
-    }*/
-
-    //Тест на исключение
-    @Test (expected = Exception.class)
-    public void getFoodReturnsException() throws Exception {
-        feline.getFood(Mockito.anyString());
-    }
-
     //Тест на семейство Кошачьих
     @Test
     public void getFamilyReturnsFelineFamilyTest() {
@@ -70,15 +29,40 @@ public class FelineTests {
 
     }
 
+    //Тест на метод getKittens()
+    @Test
+    public void getKittensReturnsKittenCountTest() {
+        int expectedReturn = 1;
+        int actualReturn = feline.getKittens();
+        assertEquals("Must return default kittens count. It's int=1", expectedReturn, actualReturn);
 
+    }
+
+    //Тест на метод getKittens(int kittensCount) с параметризацией
+    private final int numberKittens;
+    public FelineTests(int numberKittens) {
+        this.numberKittens = numberKittens;
+    }
+
+    @Parameterized.Parameters
+    public static Object getNumberKittens() {
+        return new Object[][] {
+                {0},
+                {1},
+                {2},
+                {3},
+                {4},
+                {5},
+                {6},
+                {7},
+        };
+    }
 
     @Test
-    public void getKittensReturnsKittenCount() {
-        int expectedReturn = 3;
-        int actualReturn = feline.getKittens(3);
-
+    public void getKittensReturnsKittenCountParametrizedTest() {
+        int expectedReturn = numberKittens;
+        int actualReturn = feline.getKittens(numberKittens);
         assertEquals("Must return kittens count", expectedReturn, actualReturn);
-
     }
 
 }

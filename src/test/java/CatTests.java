@@ -2,13 +2,18 @@ import com.example.Cat;
 import com.example.Feline;
 import org.junit.Assert;
 import org.junit.Test;
-
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
+@RunWith(MockitoJUnitRunner.class)
 public class CatTests {
-    Feline feline = new Feline();
+    //Создаем заглушку
+    @Mock
+    Feline feline;
 
     //Позитивный сценарий с Мяу
     @Test
@@ -31,39 +36,11 @@ public class CatTests {
     //Тест на проверку списка еды для Хищника (семейство кошачьих - хищники)
     @Test
     public void eatMeatReturnsListOfPredatorFoodForLionTest() throws Exception {
-        List<String> expected = List.of("Животные", "Птицы", "Рыба");
         Cat cat = new Cat(feline);
+        Mockito.when(feline.eatMeat()).thenReturn(List.of("Животные", "Птицы", "Рыба"));
         List <String> actual = cat.getFood();
-        assertEquals("eatMeatList is correct",expected, actual);
+        assertEquals("eatMeatList is correct",List.of("Животные", "Птицы", "Рыба"), actual);
     }
-
-    //Тест на проверку, что список еды Хищника включает в себя Рыбу
-    @Test
-    public void eatMeatContainsFishInListOfPredatorFoodForLionTest() throws Exception {
-        String fish = "Рыба";
-        Cat cat = new Cat(feline);
-        boolean actual = cat.getFood().contains(fish);
-        Assert.assertTrue("Fish is a part of getFood", actual);
-    }
-
-    //Тест на проверку, что список еды Хищника включает в себя Птиц
-    @Test
-    public void eatMeatContainsBirdsInListOfPredatorFoodForLionTest() throws Exception {
-        String birds = "Птицы";
-        Cat cat = new Cat(feline);
-        boolean actual = cat.getFood().contains(birds);
-        Assert.assertTrue("Birds are a part of getFood",actual);
-    }
-
-    //Тест на проверку, что список еды Хищника включает в себя Животных
-    @Test
-    public void eatMeatContainsAnySmallAnimalsInListOfPredatorFoodTest() throws Exception {
-        String anySmallAnimals = "Птицы";
-        Cat cat = new Cat(feline);
-        boolean actual = cat.getFood().contains(anySmallAnimals);
-        Assert.assertTrue("Any small animals are a part of eatMeatList",actual);
-    }
-
 
 
 }

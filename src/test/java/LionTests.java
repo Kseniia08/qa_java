@@ -3,14 +3,13 @@ import com.example.Lion;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-
-
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnitRunner;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class LionTests {
 
     Feline feline = new Feline();
@@ -78,5 +77,16 @@ public class LionTests {
         boolean actualSex = lion.doesHaveMane();
         Assert.assertTrue( "The lion is a male" , actualSex);
     }
+
+    //Тест с заглушкой
+    @Mock
+    Feline anotherFeline;
+    @Test
+    public void getKittensForLionTests() throws Exception {
+        Lion lion = new Lion("Самец", anotherFeline);
+        Mockito.when(anotherFeline.getKittens()).thenReturn(1);
+        int actualGetKittens = lion.getKittens();
+        assertEquals("getKittens with mock returns default int 1",1, actualGetKittens);
+        }
 
 }
